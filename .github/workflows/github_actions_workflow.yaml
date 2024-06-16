@@ -1,0 +1,38 @@
+name: "sonar_cloud_scan_github_actions"
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  DemoSonarCloudScan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+            fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'  # Вкажіть версію Node.js, яку ви використовуєте
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+              -Dsonar.organization=pavlo1377
+              -Dsonar.projectKey=SonarCloudCodeAnalyisis
+              -Dsonar.sources=.
+              -Dsonar.host.url=https://sonarcloud.io
+              -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+              -Dsonar.javascript.lcov.reportPaths=coverage/lcov-report/lcov.info
