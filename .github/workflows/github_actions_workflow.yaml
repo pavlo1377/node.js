@@ -25,7 +25,7 @@ jobs:
         with:
           args: >
               -Dsonar.organization=pavlo1377
-              -Dsonar.projectKey=SonarCloudCodeAnalyisis
+              -Dsonar.projectKey=pavlo1377
               -Dsonar.sources=.
               -Dsonar.host.url=https://sonarcloud.io
               -Dsonar.login=${{ secrets.SONAR_TOKEN }}
